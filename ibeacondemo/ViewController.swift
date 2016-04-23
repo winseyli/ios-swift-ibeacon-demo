@@ -63,11 +63,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if beacons.count > 0 {
             let beacon = beacons[0]
-            if (beacon.major == 7) {
-                imageView.image = UIImage(named: "product_tv")
-            } else if (beacon.major == 1) {
-                imageView.image = UIImage(named: "product_macbook")
+            
+            var imageName = "finding"
+            if (beacon.major == 1) {
+                imageName = "product_tv"
+            } else if (beacon.major == 2) {
+                imageName = "product_macbook"
+            } else if (beacon.major == 3) {
+                imageName = "product_dslr"
+            } else if (beacon.major == 4) {
+                imageName = "product_ps4"
             }
+            
+            imageView.image = UIImage(named: imageName)
         }
     }
     
