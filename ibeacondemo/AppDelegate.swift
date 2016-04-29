@@ -7,16 +7,76 @@
 //
 
 import UIKit
+import CoreLocation
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
+    
+    var locationManager: CLLocationManager!
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
+        
+        let notificationType:UIUserNotificationType = [ UIUserNotificationType.Sound,  UIUserNotificationType.Alert]
+        let notificationSettings = UIUserNotificationSettings(forTypes: notificationType, categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(notificationSettings)
+        
         return true
+    }
+    
+    func startMonitoring(beaconRegion: CLBeaconRegion) {
+        beaconRegion.notifyOnEntry = true
+        beaconRegion.notifyOnExit = true
+        locationManager.startMonitoringForRegion(beaconRegion)
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if !(status == .AuthorizedAlways || status == .AuthorizedWhenInUse) {
+            print("Must allow location access for this application to work")
+        } else {
+            if let uuid = NSUUID(UUIDString: Constant.IBEACON_PROXIMITY_UUID) {
+                let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: Constant.IBEACON_IDENTIFIER)
+                startMonitoring(beaconRegion)
+            }
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
+        print("monitoring started")
+    }
+    
+    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+        print("monitoring failed")
+    }
+    
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if let beaconRegion = region as? CLBeaconRegion {
+            print("DID ENTER REGION: uuid: \(beaconRegion.proximityUUID.UUIDString)")
+            
+            let notification = UILocalNotification()
+            notification.alertBody = "didEnterRegion"
+            notification.soundName = "Default"
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+        if let beaconRegion = region as? CLBeaconRegion {
+            print("DID EXIT REGION: uuid: \(beaconRegion.proximityUUID.UUIDString)")
+            
+            let notification = UILocalNotification()
+            notification.alertBody = "didExitRegion"
+            notification.soundName = "Default"
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {

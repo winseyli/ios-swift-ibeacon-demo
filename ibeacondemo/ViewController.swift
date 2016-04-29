@@ -12,7 +12,6 @@ import CoreLocation
 class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var imageView: UIImageView!
     
-    let IBEACON_PROXIMITY_UUID = "00B5E77E-FCF1-4B6E-A53E-24EC77B6F59F"
     var locationManager: CLLocationManager!
 
     override func viewDidLoad() {
@@ -41,8 +40,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         if !(status == .AuthorizedAlways || status == .AuthorizedWhenInUse) {
             print("Must allow location access for this application to work")
         } else {
-            if let uuid = NSUUID(UUIDString: IBEACON_PROXIMITY_UUID) {
-                let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: "iBeacon")
+            if let uuid = NSUUID(UUIDString: Constant.IBEACON_PROXIMITY_UUID) {
+                let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: Constant.IBEACON_IDENTIFIER)
                 startMonitoring(beaconRegion)
                 startRanging(beaconRegion)
             }
