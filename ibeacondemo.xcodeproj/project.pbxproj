@@ -99,6 +99,8 @@
 				TargetAttributes = {
 					D89326221CC9CDB900E4FE41 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 2SLKZ55W2Q;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -255,11 +257,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2SLKZ55W2Q;
 				INFOPLIST_FILE = ibeacondemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.codefrd.ibeacondemo;
+				PRODUCT_BUNDLE_IDENTIFIER = hk.org.beamsociety.NetworkTester;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -267,11 +271,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 2SLKZ55W2Q;
 				INFOPLIST_FILE = ibeacondemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.codefrd.ibeacondemo;
+				PRODUCT_BUNDLE_IDENTIFIER = hk.org.beamsociety.NetworkTester;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

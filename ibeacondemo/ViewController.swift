@@ -24,23 +24,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.requestAlwaysAuthorization()
     }
     
-    func startMonitoring(beaconRegion: CLBeaconRegion) {
+    func startMonitoring(_ beaconRegion: CLBeaconRegion) {
         beaconRegion.notifyOnEntry = true
         beaconRegion.notifyOnExit = true
-        locationManager.startMonitoringForRegion(beaconRegion)
+        locationManager.startMonitoring(for: beaconRegion)
     }
 
-    func startRanging(beaconRegion: CLBeaconRegion) {
-        locationManager.startRangingBeaconsInRegion(beaconRegion)
+    func startRanging(_ beaconRegion: CLBeaconRegion) {
+        locationManager.startRangingBeacons(in: beaconRegion)
     }
     
     //  ======== CLLocationManagerDelegate methods ==========
     
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if !(status == .AuthorizedAlways || status == .AuthorizedWhenInUse) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if !(status == .authorizedAlways || status == .authorizedWhenInUse) {
             print("Must allow location access for this application to work")
         } else {
-            if let uuid = NSUUID(UUIDString: Constant.IBEACON_PROXIMITY_UUID) {
+            if let uuid = UUID(uuidString: Constant.IBEACON_PROXIMITY_UUID) {
                 let beaconRegion = CLBeaconRegion(proximityUUID: uuid, identifier: Constant.IBEACON_IDENTIFIER)
                 startMonitoring(beaconRegion)
                 startRanging(beaconRegion)
@@ -48,16 +48,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], inRegion region: CLBeaconRegion) {
+    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         for beacon in beacons {
             var beaconProximity: String
             switch (beacon.proximity) {
-            case CLProximity.Unknown:    beaconProximity = "Unknown"
-            case CLProximity.Far:        beaconProximity = "Far"
-            case CLProximity.Near:       beaconProximity = "Near"
-            case CLProximity.Immediate:  beaconProximity = "Immediate"
+            case CLProximity.unknown:    beaconProximity = "Unknown"
+            case CLProximity.far:        beaconProximity = "Far"
+            case CLProximity.near:       beaconProximity = "Near"
+            case CLProximity.immediate:  beaconProximity = "Immediate"
             }
-            print("BEACON RANGED: uuid: \(beacon.proximityUUID.UUIDString) major: \(beacon.major)  minor: \(beacon.minor) proximity: \(beaconProximity)")
+            print("BEACON RANGED: uuid: \(beacon.proximityUUID.uuidString) major: \(beacon.major)  minor: \(beacon.minor) proximity: \(beaconProximity)")
         }
         
         if beacons.count > 0 {
@@ -78,23 +78,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    func locationManager(manager: CLLocationManager, didStartMonitoringForRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         print("monitoring started")
     }
     
-    func locationManager(manager: CLLocationManager, monitoringDidFailForRegion region: CLRegion?, withError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
         print("monitoring failed")
     }
     
-    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if let beaconRegion = region as? CLBeaconRegion {
-            print("DID ENTER REGION: uuid: \(beaconRegion.proximityUUID.UUIDString)")
+            print("DID ENTER REGION: uuid: \(beaconRegion.proximityUUID.uuidString)")
         }
     }
     
-    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
+    func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if let beaconRegion = region as? CLBeaconRegion {
-            print("DID EXIT REGION: uuid: \(beaconRegion.proximityUUID.UUIDString)")
+            print("DID EXIT REGION: uuid: \(beaconRegion.proximityUUID.uuidString)")
         }
     }
     
